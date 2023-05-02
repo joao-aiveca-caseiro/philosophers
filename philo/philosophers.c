@@ -6,30 +6,63 @@
 /*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:36:55 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/01 04:47:55 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/02 17:34:45 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	parsing_args(int argc, char **argv, t_philo *philo)
+int	create_forks(t_list *init)
 {
-	philo->philos_n = ft_atoi(argv[1]);
-	philo->time_to_die = ft_atoi(argv[2]);
-	philo->time_to_eat = ft_atoi(argv[3]);
-	philo->time_to_sleep = ft_atoi(argv[4]);
-	printf("number of philos: %i\n", philo->philos_n);
-	printf("time to die: %i\n", philo->time_to_die);
-	printf("time to eat: %i\n", philo->time_to_eat);
-	printf("time_to_sleep: %i\n", philo->time_to_sleep);
-	if (philo->philos_n <= 0 || philo->time_to_die <= 0
-		|| philo->time_to_eat <= 0 || philo->time_to_sleep <= 0)
+	int	i;
+
+	i = -1;
+	init->forks = NULL;
+	init->forks = malloc(sizeof(pthread_mutex_t) * init->philos_n);
+	if (!init->forks)
+		return (0);
+	while (++i < init->philos_n)
+	{
+		if (pthread_mutex_init(&init->forks[i], NULL) != 0)
+			return (0);
+		printf("Fork %i successfully created!\n", i);
+	}
+	return (1);
+}
+
+int	create_philosophers(t_list *init)
+{
+	t_philo	*philo;
+	int		i;
+
+	i = -1;
+	philo = malloc(sizeof(t_philo) * init->philos_n);
+	if (!philo)
+		return (0);
+	while (++i < init->philos_n)
+	{
+		philo[i]->
+	}
+}
+
+int	parsing_args(int argc, char **argv, t_list *init)
+{
+	init->philos_n = ft_atoi(argv[1]);
+	init->time_to_die = ft_atoi(argv[2]);
+	init->time_to_eat = ft_atoi(argv[3]);
+	init->time_to_sleep = ft_atoi(argv[4]);
+	printf("number of philos: %i\n", init->philos_n);
+	printf("time to die: %i\n", init->time_to_die);
+	printf("time to eat: %i\n", init->time_to_eat);
+	printf("time_to_sleep: %i\n", init->time_to_sleep);
+	if (init->philos_n <= 0 || init->time_to_die <= 0
+		|| init->time_to_eat <= 0 || init->time_to_sleep <= 0)
 		return (1);
 	if (argc == 6)
 	{
-		philo->min_meals = ft_atoi(argv[5]);
-		printf("minimum meals: %i\n", philo->min_meals);
-		if (philo->min_meals <= 0)
+		init->min_meals = ft_atoi(argv[5]);
+		printf("minimum meals: %i\n", init->min_meals);
+		if (init->min_meals <= 0)
 			return (1);
 	}
 	return (0);
@@ -37,22 +70,23 @@ int	parsing_args(int argc, char **argv, t_philo *philo)
 
 int	main(int argc, char **argv)
 {
-	t_philo	philo;
+	t_list	init;
 
-	philo.philos_n = 0;
-	philo.time_to_die = 0;
-	philo.time_to_eat = 0;
-	philo.time_to_sleep = 0;
-	philo.min_meals = 0;
+	init.philos_n = 0;
+	init.time_to_die = 0;
+	init.time_to_eat = 0;
+	init.time_to_sleep = 0;
+	init.min_meals = 0;
 	if (argc < 5 || argc > 6)
 	{
 		write(2, "Error: Invalid number of arguments.\n", 37);
 		return (1);
 	}
-	if (parsing_args(argc, argv, &philo) == 1)
+	if (parsing_args(argc, argv, &init) == 1)
 	{
 		write(2, "Error: Invalid argument.\n", 26);
 		return (1);
 	}
+	create_forks(&init);
 	return (0);
 }
