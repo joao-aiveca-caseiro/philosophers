@@ -1,5 +1,5 @@
 SRCS		= philosophers.c\
-				parsing.c
+				utils.c
 OBJS		= ${SRCS:.c=.o}
 NAME		= philo
 CC			= cc

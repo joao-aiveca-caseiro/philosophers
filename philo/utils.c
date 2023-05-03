@@ -1,16 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 01:48:43 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/02 15:02:47 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/03 19:17:32 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+int	get_time_ms(void)
+{
+	struct timeval	time;
+	int				time_ms;
+
+	gettimeofday(&time, NULL);
+//	time_ms = time.tv_sec * 1000 + time.tv_usec / 1000;
+	time_ms = time.tv_usec / 1000;
+	return (time_ms);
+}
 
 int	int_overflow(int res, char c, int sign)
 {

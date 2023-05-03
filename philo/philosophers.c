@@ -6,7 +6,7 @@
 /*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:36:55 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/02 17:34:45 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/03 19:17:24 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,16 @@ int	create_philosophers(t_list *init)
 		return (0);
 	while (++i < init->philos_n)
 	{
-		philo[i]->
+		philo[i].id = i + 1;
+		philo[i].left_fork = &init->forks[i];
+		philo[i].right_fork = &init->forks[(i + 1) % init->philos_n];
+		philo[i].prev_meal_time = get_time_ms();
+		printf("PHILO ID: %i\n", philo[i].id);
+		printf("LEFT FORK: %i\n", i);
+		printf("RIGHT FORK: %i\n", (i + 1) % init->philos_n);
+		printf("TIME: %i\n\n", philo[i].prev_meal_time);
 	}
+	return (1);
 }
 
 int	parsing_args(int argc, char **argv, t_list *init)
@@ -88,5 +96,6 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	create_forks(&init);
+	create_philosophers(&init);
 	return (0);
 }
