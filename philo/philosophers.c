@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:36:55 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/03 19:17:24 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/04 19:10:35 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,23 @@ int	create_forks(t_list *init)
 
 int	create_philosophers(t_list *init)
 {
-	t_philo	*philo;
 	int		i;
 
 	i = -1;
-	philo = malloc(sizeof(t_philo) * init->philos_n);
-	if (!philo)
+	init->philo = NULL;
+	init->philo = malloc(sizeof(t_philo) * init->philos_n);
+	if (!init->philo)
 		return (0);
 	while (++i < init->philos_n)
 	{
-		philo[i].id = i + 1;
-		philo[i].left_fork = &init->forks[i];
-		philo[i].right_fork = &init->forks[(i + 1) % init->philos_n];
-		philo[i].prev_meal_time = get_time_ms();
-		printf("PHILO ID: %i\n", philo[i].id);
+		init->philo[i].id = i + 1;
+		init->philo[i].left_fork = &init->forks[i];
+		init->philo[i].right_fork = &init->forks[(i + 1) % init->philos_n];
+		init->philo[i].prev_meal_time = get_time_ms();
+		printf("PHILO ID: %i\n", init->philo[i].id);
 		printf("LEFT FORK: %i\n", i);
 		printf("RIGHT FORK: %i\n", (i + 1) % init->philos_n);
-		printf("TIME: %i\n\n", philo[i].prev_meal_time);
+		printf("TIME: %lli\n\n", init->philo[i].prev_meal_time);
 	}
 	return (1);
 }
@@ -97,5 +97,6 @@ int	main(int argc, char **argv)
 	}
 	create_forks(&init);
 	create_philosophers(&init);
+	init_routine(init.philo, &init);
 	return (0);
 }
