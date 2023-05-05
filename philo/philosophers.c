@@ -6,7 +6,7 @@
 /*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:36:55 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/04 19:10:35 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/05 17:55:35 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,29 @@ int	create_forks(t_list *init)
 	return (1);
 }
 
-int	create_philosophers(t_list *init)
+t_philo	*create_philosophers(t_list *init)
 {
 	int		i;
+	t_philo	*philo;
 
 	i = -1;
-	init->philo = NULL;
-	init->philo = malloc(sizeof(t_philo) * init->philos_n);
-	if (!init->philo)
+	philo = NULL;
+	philo = malloc(sizeof(t_philo) * init->philos_n);
+	if (!philo)
 		return (0);
 	while (++i < init->philos_n)
 	{
-		init->philo[i].id = i + 1;
-		init->philo[i].left_fork = &init->forks[i];
-		init->philo[i].right_fork = &init->forks[(i + 1) % init->philos_n];
-		init->philo[i].prev_meal_time = get_time_ms();
-		printf("PHILO ID: %i\n", init->philo[i].id);
+		philo[i].id = i + 1;
+		philo[i].left_fork = &init->forks[i];
+		philo[i].right_fork = &init->forks[(i + 1) % init->philos_n];
+		philo[i].prev_meal_time = get_time_ms();
+		philo[i].init = init;
+		printf("PHILO ID: %i\n", philo[i].id);
 		printf("LEFT FORK: %i\n", i);
 		printf("RIGHT FORK: %i\n", (i + 1) % init->philos_n);
-		printf("TIME: %lli\n\n", init->philo[i].prev_meal_time);
+		printf("TIME: %lli\n\n", philo[i].prev_meal_time);
 	}
-	return (1);
+	return (philo);
 }
 
 int	parsing_args(int argc, char **argv, t_list *init)
@@ -79,6 +81,7 @@ int	parsing_args(int argc, char **argv, t_list *init)
 int	main(int argc, char **argv)
 {
 	t_list	init;
+	t_philo	*philo;
 
 	init.philos_n = 0;
 	init.time_to_die = 0;
@@ -96,7 +99,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	create_forks(&init);
-	create_philosophers(&init);
-	init_routine(init.philo, &init);
+	philo = create_philosophers(&init);
+	init_routine(philo, &init);
 	return (0);
 }
