@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:36:55 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/05 17:55:35 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/08 18:41:58 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@ int	create_forks(t_list *init)
 	return (1);
 }
 
+int	init_util_mutexes(t_list *init)
+{
+	init->print_lock = NULL;
+	init->print_lock = malloc(sizeof(pthread_mutex_t));
+	if (pthread_mutex_init(init->print_lock, NULL) != 0)
+		return (0);
+	return (1);
+}
+
 t_philo	*create_philosophers(t_list *init)
 {
 	int		i;
@@ -45,12 +54,12 @@ t_philo	*create_philosophers(t_list *init)
 		philo[i].id = i + 1;
 		philo[i].left_fork = &init->forks[i];
 		philo[i].right_fork = &init->forks[(i + 1) % init->philos_n];
-		philo[i].prev_meal_time = get_time_ms();
+		philo[i].prev_meal_time = 0;
 		philo[i].init = init;
 		printf("PHILO ID: %i\n", philo[i].id);
 		printf("LEFT FORK: %i\n", i);
 		printf("RIGHT FORK: %i\n", (i + 1) % init->philos_n);
-		printf("TIME: %lli\n\n", philo[i].prev_meal_time);
+		printf("TIME: %zu\n\n", philo[i].prev_meal_time);
 	}
 	return (philo);
 }
@@ -99,6 +108,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	create_forks(&init);
+	init_util_mutexes(&init);
 	philo = create_philosophers(&init);
 	init_routine(philo, &init);
 	return (0);
