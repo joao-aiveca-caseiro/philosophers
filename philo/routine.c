@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:17:51 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/05 18:54:02 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/08 13:16:33 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,17 @@ void	eating(t_philo *philo)
 	printf("%llims %i has taken a fork\n", get_time_ms() - philo->start_time, philo->id);
 	printf("%llims %i has taken a fork\n", get_time_ms() - philo->start_time, philo->id);
 	printf("%llims %i is eating\n", get_time_ms() - philo->start_time, philo->id);
+	usleep(philo->init->time_to_eat * 1000);
 	philo->prev_meal_time = get_time_ms();
+	philo->meal_count++;
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+}
+
+void	sleeping(t_philo *philo)
+{
+	printf("%llims %i is sleeping\n", get_time_ms() - philo->start_time, philo->id);
+	usleep(philo->init->time_to_sleep * 1000);
 }
 
 void	*routine_exec(void *void_philo)
@@ -45,9 +55,12 @@ void	*routine_exec(void *void_philo)
 	t_philo	*philo;
 	
 	philo = (t_philo *)void_philo;
-	printf("IN ROUTINE\n");
-	printf("%i\n", philo->init->philos_n);
-	eating(philo);
-	// sleeping(philo);
+	while (1)
+	{
+		eating(philo);
+		sleeping(philo);
+		printf("%llims %i is thinking\n", get_time_ms() - philo->start_time, philo->id);
+//		usleep(100);
+	}
 	return (0);
 }

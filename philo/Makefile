@@ -4,7 +4,7 @@ SRCS		= philosophers.c\
 OBJS		= ${SRCS:.c=.o}
 NAME		= philo
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror -fsanitize=thread #-fsanitize=address
 
 .c.o:
 			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
