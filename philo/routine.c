@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:17:51 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/08 19:01:43 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/10 14:06:44 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ void	init_routine(t_philo *philo, t_list *init)
 	while (++i < init->philos_n)
 	{
 		philo[i].start_time = get_time_ms();
-	//	printf("PHILO %i START TIME: %i\n", i, philo[i].start_time);
 		pthread_create(&philo[i].thread, NULL, routine_exec, &philo[i]);
 		ft_usleep(100);
 	}
 	i = -1;
+	create_supervisor(philo);
 	while (++i < init->philos_n)
 	{
 		pthread_join(philo[i].thread, NULL);

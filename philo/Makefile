@@ -1,6 +1,7 @@
 SRCS		= philosophers.c\
 				utils.c\
-				routine.c
+				routine.c\
+				supervising.c
 OBJS		= ${SRCS:.c=.o}
 NAME		= philo
 CC			= cc

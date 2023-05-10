@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:08:32 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/08 18:42:19 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/10 14:06:55 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,6 @@ size_t get_time_ms(void);
 void	init_routine(t_philo *philo, t_list *init);
 void	*routine_exec(void *init);
 void	ft_usleep(size_t time);
+void	create_supervisor(t_philo *philo);
 
 #endif

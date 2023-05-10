@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:36:55 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/08 18:41:58 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/10 14:21:44 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ t_philo	*create_philosophers(t_list *init)
 		philo[i].id = i + 1;
 		philo[i].left_fork = &init->forks[i];
 		philo[i].right_fork = &init->forks[(i + 1) % init->philos_n];
-		philo[i].prev_meal_time = 0;
+		philo[i].prev_meal_time = get_time_ms();
 		philo[i].init = init;
 		printf("PHILO ID: %i\n", philo[i].id);
 		printf("LEFT FORK: %i\n", i);
 		printf("RIGHT FORK: %i\n", (i + 1) % init->philos_n);
-		printf("TIME: %zu\n\n", philo[i].prev_meal_time);
+		printf("TIME: %ld\n\n", philo[i].prev_meal_time);
 	}
 	return (philo);
 }
