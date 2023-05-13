@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:36:55 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/12 03:04:33 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/13 14:16:01 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ t_philo	*create_philosophers(t_list *init)
 		philo[i].right_fork = &init->forks[(i + 1) % init->philos_n];
 		philo[i].prev_meal_time = get_time_ms();
 		philo[i].init = init;
+		philo[i].meal_count = 0;
+		philo[i].full_flag = 0;
 	}
 	return (philo);
 }
@@ -71,6 +73,8 @@ int	parsing_args(int argc, char **argv, t_list *init)
 	init->time_to_die = ft_atoi(argv[2]);
 	init->time_to_eat = ft_atoi(argv[3]);
 	init->time_to_sleep = ft_atoi(argv[4]);
+	init->completed = 0;
+	init->death_flag = 0;
 	printf("number of philos: %i\n", init->philos_n);
 	printf("time to die: %ld\n", init->time_to_die);
 	printf("time to eat: %i\n", init->time_to_eat);

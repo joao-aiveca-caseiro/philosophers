@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 01:48:43 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/12 03:22:10 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/13 11:40:18 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,33 @@ size_t	get_time_ms(void)
 	return (time_ms);
 }
 
+// void	ft_usleep(size_t time)
+// {
+// 	size_t	start_time;
+
+// 	start_time = get_time_ms();
+// 	if (time < 10000)
+// 		usleep(time);
+// 	else
+// 		while ((get_time_ms() - start_time) < time / 1000)
+// 			usleep(time / 10000);
+// }
+
+// void	ft_usleep(size_t time)
+// {
+// 	usleep(time);
+// }
+
 void	ft_usleep(size_t time)
 {
 	size_t	start_time;
 
 	start_time = get_time_ms();
-	if (time < 10000)
+	if (time < 1000)
 		usleep(time);
 	else
 		while ((get_time_ms() - start_time) < time / 1000)
-			usleep(time / 10000);
+			usleep(10);
 }
 
 int	int_overflow(int res, char c, int sign)
