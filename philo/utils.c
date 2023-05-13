@@ -6,7 +6,7 @@
 /*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 01:48:43 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/08 19:09:27 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/12 03:22:10 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 size_t	get_time_ms(void)
 {
 	struct timeval	time;
-	size_t				time_ms;
+	size_t			time_ms;
 
 	gettimeofday(&time, NULL);
 	time_ms = time.tv_sec * 1000 + time.tv_usec / 1000;
@@ -27,19 +27,12 @@ void	ft_usleep(size_t time)
 	size_t	start_time;
 
 	start_time = get_time_ms();
-	while ((get_time_ms() - start_time) < time / 1000)
-		usleep(time / 10000);
+	if (time < 10000)
+		usleep(time);
+	else
+		while ((get_time_ms() - start_time) < time / 1000)
+			usleep(time / 10000);
 }
-
-// long long	get_time_ms(void)
-// {
-// 	struct timeval	time;
-// 	long long				time_ms;
-
-// 	gettimeofday(&time, NULL);
-// 	time_ms = time.tv_sec * 1000 + time.tv_usec / 1000;
-// 	return (time_ms);
-// }
 
 int	int_overflow(int res, char c, int sign)
 {

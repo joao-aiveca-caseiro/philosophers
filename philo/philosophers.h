@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:08:32 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/10 14:06:55 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/12 03:04:18 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 typedef struct s_list
 {
 	int				philos_n;
-	int				time_to_die;
+	size_t			time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				min_meals;
-	pthread_mutex_t	*print_lock;
+	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*forks;
 }	t_list;
 
@@ -35,17 +35,18 @@ typedef struct s_philo
 {
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	can_die;
 	pthread_t		thread;
 	int				id;
-	size_t		prev_meal_time;
-	size_t		start_time;
+	size_t			prev_meal_time;
+	size_t			start_time;
 	int				meal_count;
 	t_list			*init;
 }	t_philo;
 
-int	ft_atoi(const char *str);
-int	parsing_args(int argc, char **argv, t_list *init);
-size_t get_time_ms(void);
+int		ft_atoi(const char *str);
+int		parsing_args(int argc, char **argv, t_list *init);
+size_t	get_time_ms(void);
 void	init_routine(t_philo *philo, t_list *init);
 void	*routine_exec(void *init);
 void	ft_usleep(size_t time);

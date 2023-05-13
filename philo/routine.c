@@ -3,20 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:17:51 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/10 14:06:44 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/12 03:16:29 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+// void	print_state(t_philo *philo, char c)
+// {
+// 	size_t	time;
+
+// 	pthread_mutex_lock(&philo->init->print_lock);
+// 	time = get_time_ms() - philo->start_time;
+// 	if (c == 'f')
+// 		printf("%ld %i has taken a fork 🍴\n", time, philo->id);
+// 	else if (c == 'e')
+// 		printf("%ld %i is eating 🥗\n", time, philo->id);
+// 	else if (c == 's')
+// 		printf("%ld %i is sleeping 💤\n", time, philo->id);
+// 	else if (c == 't')
+// 		printf("%ld %i is thinking 💭\n", time, philo->id);
+// 	pthread_mutex_unlock(&philo->init->print_lock);
+// }
+
 void	print_state(t_philo *philo, char c)
 {
 	size_t	time;
 
-	pthread_mutex_lock(philo->init->print_lock);
+	pthread_mutex_lock(&philo->init->print_lock);
 	time = get_time_ms() - philo->start_time;
 	if (c == 'f')
 		printf("%ld %i has taken a fork\n", time, philo->id);
@@ -26,7 +43,7 @@ void	print_state(t_philo *philo, char c)
 		printf("%ld %i is sleeping\n", time, philo->id);
 	else if (c == 't')
 		printf("%ld %i is thinking\n", time, philo->id);
-	pthread_mutex_unlock(philo->init->print_lock);
+	pthread_mutex_unlock(&philo->init->print_lock);
 }
 
 void	init_routine(t_philo *philo, t_list *init)
@@ -52,10 +69,12 @@ void	eating(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	pthread_mutex_lock(philo->right_fork);
+	pthread_mutex_lock(&philo->can_die);
 	print_state(philo, 'f');
 	print_state(philo, 'f');
 	print_state(philo, 'e');
 	philo->prev_meal_time = get_time_ms();
+	pthread_mutex_unlock(&philo->can_die);
 	ft_usleep(philo->init->time_to_eat * 1000);
 	philo->meal_count++;
 	pthread_mutex_unlock(philo->left_fork);
@@ -80,5 +99,5 @@ void	*routine_exec(void *void_philo)
 		print_state(philo, 't');
 		ft_usleep(100);
 	}
-	return (0);
+	return (NULL);
 }
