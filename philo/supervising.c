@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   supervising.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 12:18:58 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/13 15:29:35 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/14 13:39:23 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,19 @@ void	*dying(t_philo *philo, int i)
 {
 	size_t	time;
 
-//	pthread_mutex_lock(&philo->init->print_lock);
 	philo->init->death_flag = 1;
-//	pthread_mutex_unlock(&philo->init->print_lock);
 	time = get_time_ms() - philo->start_time;
 	pthread_mutex_lock(&philo->init->print_lock);
-	printf("%ld %i died\n", time, philo->id);
+	printf("%ld %i died\n", time, philo[i].id);
 	pthread_mutex_unlock(&philo->init->print_lock);
 	pthread_mutex_unlock(&philo[i].can_die);
 	return (NULL);
+}
+
+void	philo_reached_goal(t_philo *philo, int i)
+{
+	philo->init->completed++;
+	philo[i].full_flag = 1;
 }
 
 void	*supervising(void *philo_void)
@@ -40,16 +44,13 @@ void	*supervising(void *philo_void)
 		{
 			pthread_mutex_lock(&philo[i].can_die);
 			if (get_time_ms() - philo[i].prev_meal_time
-				> philo[i].init->time_to_die)
+				> (size_t)philo[i].init->time_to_die)
 				return (dying(philo, i));
 			pthread_mutex_unlock(&philo[i].can_die);
 			pthread_mutex_lock(&philo->init->print_lock);
-			if (philo[i].meal_count && philo[i].meal_count 
-			== philo->init->min_meals && philo[i].full_flag == 0)
-			{
-				philo->init->completed++;
-				philo[i].full_flag = 1;				
-			}
+			if (philo[i].meal_count && philo[i].meal_count
+				== philo->init->min_meals && philo[i].full_flag == 0)
+				philo_reached_goal(philo, i);
 			pthread_mutex_unlock(&philo->init->print_lock);
 		}
 	}
@@ -57,11 +58,13 @@ void	*supervising(void *philo_void)
 	return (NULL);
 }
 
-void	create_supervisor(t_philo *philo)
+int	create_supervisor(t_philo *philo)
 {
 	pthread_t	supervisor;
 
-	if (!pthread_create(&supervisor, NULL, &supervising, (void *)philo))
-		pthread_join(supervisor, NULL);
-	printf("ADIEU\n");
+	if (pthread_create(&supervisor, NULL, &supervising, (void *)philo))
+		return (0);
+	if (pthread_join(supervisor, NULL))
+		return (0);
+	return (1);
 }

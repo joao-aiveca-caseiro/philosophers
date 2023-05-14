@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 01:48:43 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/13 11:40:18 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/14 12:41:39 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,16 @@ size_t	get_time_ms(void)
 	return (time_ms);
 }
 
-// void	ft_usleep(size_t time)
-// {
-// 	size_t	start_time;
+void	destroy_and_free(t_philo *philo, t_list *init)
+{
+	int	i;
 
-// 	start_time = get_time_ms();
-// 	if (time < 10000)
-// 		usleep(time);
-// 	else
-// 		while ((get_time_ms() - start_time) < time / 1000)
-// 			usleep(time / 10000);
-// }
-
-// void	ft_usleep(size_t time)
-// {
-// 	usleep(time);
-// }
+	i = -1;
+	while (++i < init->philos_n)
+		pthread_mutex_destroy(&init->forks[i]);
+	free(init->forks);
+	free(philo);
+}
 
 void	ft_usleep(size_t time)
 {

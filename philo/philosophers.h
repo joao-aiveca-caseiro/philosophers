@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaiveca- <jaiveca-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:08:32 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/13 14:15:39 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/14 13:38:33 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 typedef struct s_list
 {
 	int				philos_n;
-	size_t			time_to_die;
+	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				min_meals;
@@ -53,7 +53,8 @@ size_t	get_time_ms(void);
 void	init_routine(t_philo *philo, t_list *init);
 void	*routine_exec(void *init);
 void	ft_usleep(size_t time);
-void	create_supervisor(t_philo *philo);
+int		create_supervisor(t_philo *philo);
 void	print_state(t_philo *philo, char c);
+void	destroy_and_free(t_philo *philo, t_list *init);
 
 #endif

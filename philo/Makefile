@@ -1,11 +1,12 @@
 SRCS		= philosophers.c\
 				utils.c\
 				routine.c\
-				supervising.c
+				supervising.c\
+				printing.c
 OBJS		= ${SRCS:.c=.o}
 NAME		= philo
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -fsanitize=thread
+CFLAGS		= -Wall -Wextra -Werror -pthread
 
 .c.o:
 			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
