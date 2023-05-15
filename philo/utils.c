@@ -6,7 +6,7 @@
 /*   By: jaiveca- <jaiveca-@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 01:48:43 by jaiveca-          #+#    #+#             */
-/*   Updated: 2023/05/14 12:41:39 by jaiveca-         ###   ########.fr       */
+/*   Updated: 2023/05/15 11:14:06 by jaiveca-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,12 @@ void	destroy_and_free(t_philo *philo, t_list *init)
 
 	i = -1;
 	while (++i < init->philos_n)
-		pthread_mutex_destroy(&init->forks[i]);
-	free(init->forks);
-	free(philo);
+		if (&init->forks[i])
+			pthread_mutex_destroy(&init->forks[i]);
+	if (init->forks)
+		free(init->forks);
+	if (philo)
+		free(philo);
 }
 
 void	ft_usleep(size_t time)
